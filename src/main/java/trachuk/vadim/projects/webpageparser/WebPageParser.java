@@ -1,8 +1,10 @@
 package trachuk.vadim.projects.webpageparser;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -16,13 +18,16 @@ public class WebPageParser {
 
     public static void main(String[] args) throws Exception, RuntimeException {
         if (args != null && args.length == MAX_ARGS_LENGTH) {
+
             WebPageParser webPageParser = null;
             webPageParser = new WebPageParser(args[0]);
             try {
                 webPageParser.parse();
+
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
+            webPageParser.getIpAdrress();
         } else {
             System.out.println("wrong number of param. max valiable args count is " + MAX_ARGS_LENGTH);
         }
@@ -85,5 +90,29 @@ public class WebPageParser {
 
         return list;
     }
+
+/*
+    public String getIpAdrress(int port) throws UnknownHostException {
+
+        String getAllIp = null;
+
+        InetAddress[] ipList = new InetAddress[0];
+
+        ipList = InetAddress.getAllByName(url);
+
+        for (InetAddress address : ipList){
+            getAllIp = address.getHostAddress();
+        }
+        System.out.println(getAllIp);
+
+     return getAllIp;
+    }*/
+        public String getIpAdrress() throws IOException {
+            InetAddress ip = InetAddress.getByName(new URL(this.url)
+                    .getHost());
+            System.out.println("Public IP Address of: " + ip);
+            return String.valueOf(ip);
+        }
+
 }
 
